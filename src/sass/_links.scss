@@ -1,0 +1,40 @@
+@use "./mode" as *;
+
+a:not([class]) {
+  @include color-var("color", primary);
+  text-underline-position: under;
+  text-decoration: underline 2px;
+  cursor: url("../assets/cursors/link-select.cur"), auto;
+
+  &:not(.nostyle) {
+    transition: all 0.3s linear;
+    background: linear-gradient(to right, #00d1b1 0%, #278fc6 98%);
+    background-size: 0px 2px;
+    background-repeat: no-repeat;
+    background-position: left 10%;
+    text-shadow: 0;
+  }
+
+  &:hover {
+    background-size: 100% 2px;
+    @include color-var(color, secondary);
+    // text-shadow: 0 2.5px 4px rgba(0, 0, 0, 0.5);
+  }
+
+  &:focus {
+    @include color-var(color, secondary);
+  }
+}
+
+a[href$=".pdf"]:after {
+  content: " (PDF)";
+  text-decoration: none;
+}
+
+a[href$=".pdf"][data-size]:after {
+  @include color-var("color", pdfLink);
+  text-decoration: none;
+  font-size: 0.7em;
+  font-style: italic;
+  content: " (PDF, " attr(data-size) ")";
+}

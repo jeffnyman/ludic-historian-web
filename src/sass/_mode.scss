@@ -1,0 +1,26 @@
+// The color map below defaults to the light color mode.
+// This is necessary so the mixin has values to refer to.
+
+$colors: (
+  "surface1": #e6e6e6,
+  "surface2": #f2f2f2,
+  "surface3": #ffffff,
+  "element1": #111111,
+  "element2": #222222,
+  "element3": #333333,
+  "elementInverse": #eee,
+  "primary": #01408e,
+  "secondary": #3c5d5c,
+  "tertiary": #fff7d6,
+);
+
+// Provide automatic fallback for values. Instead of this:
+//   background-color: #e6e6e6;
+//   background-color: var(--surface1, #e6e6e6);
+// You can just do this:
+//   @include color-var("background-color", surface1);
+
+@mixin color-var($property, $color) {
+  #{$property}: map-get($colors, "#{$color}");
+  #{$property}: var(--#{$color}, map-get($colors, "#{$color}"));
+}

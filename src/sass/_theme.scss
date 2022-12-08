@@ -1,0 +1,45 @@
+@use "./mode" as *;
+
+.color-mode {
+  // Any element with the class light--hidden will be hidden when the
+  // site is set to Light Mode, which is controlled by the custom
+  // attribute on the HTML element. Likewise, any element with the
+  // class dark--hidden will be hidden when the site is set to Dark
+  // Mode.
+  :root[color-mode="light"] & {
+    .light--hidden {
+      display: none;
+    }
+  }
+
+  :root[color-mode="dark"] & {
+    .dark--hidden {
+      display: none;
+    }
+  }
+}
+
+.color-mode-btn {
+  @include color-var(color, element1);
+  background: none;
+  border: none;
+  border-radius: var(--radius);
+
+  svg {
+    @include color-var(stroke, tertiary);
+    width: 30px;
+    height: 30px;
+    margin-left: 7px;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.5px;
+  }
+
+  &:hover svg,
+  &:focus svg,
+  &:focus {
+    @include color-var(fill, tertiary);
+    outline: none;
+  }
+}
