@@ -61,6 +61,7 @@ html {
 }
 
 body {
+  position: relative;
   overscroll-behavior-y: none;
 }
 
@@ -259,7 +260,7 @@ pre code {
 .sidemenu {
   font-weight: 100;
   @include color-var("background-color", surface2);
-  width: 180px;
+  width: 160px;
   height: 100%;
   padding-left: 50px;
   position: fixed;
@@ -280,7 +281,7 @@ pre code {
     @include color-var("color", element3);
     @include vertical-align(absolute);
     transform: rotate(270deg);
-    left: 10px;
+    left: -5px;
     font-weight: 800;
     font-size: 15px;
   }
