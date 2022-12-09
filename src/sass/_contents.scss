@@ -394,3 +394,26 @@ pre code {
     display: none !important;
   }
 }
+
+// Skip to main content
+
+.skip-to-main-content-link {
+  position: absolute;
+  left: -9999px;
+  z-index: 999;
+  padding: 1em;
+  background-color: #e77e23;
+  color: white;
+  opacity: 0;
+  border: none;
+}
+
+.skip-to-main-content-link:focus {
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 1;
+}
+
+#main {
+  scroll-margin: 10rem;
+}
