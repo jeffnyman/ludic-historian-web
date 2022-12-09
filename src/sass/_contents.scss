@@ -63,6 +63,29 @@ html {
 body {
   position: relative;
   overscroll-behavior-y: none;
+
+  // Top and Bottom shadow bar
+  &::before {
+    position: fixed;
+    content: "";
+    z-index: 100;
+    top: -10px;
+    left: -10px;
+    width: 110%;
+    height: 10px;
+    box-shadow: 0 0px 10px rgba(0, 0, 0, 0.8);
+  }
+
+  &::after {
+    position: fixed;
+    content: "";
+    z-index: 100;
+    bottom: -9px;
+    left: -10px;
+    width: 110%;
+    height: 10px;
+    box-shadow: 0 0px 10px rgba(0, 0, 0, 0.8);
+  }
 }
 
 body::-webkit-scrollbar {
@@ -110,6 +133,31 @@ article {
 
     letter-spacing: 0.08em;
     word-spacing: 0.16em;
+  }
+
+  // Corners Styling
+  position: relative;
+
+  &:after,
+  &:before {
+    position: absolute;
+    content: "";
+    top: -25px;
+    height: 50px;
+    width: 100px;
+    //background: #e6e6e6;
+    @include color-var(background-color, surface1);
+    box-shadow: 0 5px 8px -7px hsla(0, 0%, 0%, 0.5);
+  }
+
+  &:after {
+    left: -50px;
+    transform: rotate(-45deg);
+  }
+
+  &:before {
+    right: -50px;
+    transform: rotate(45deg);
   }
 }
 
