@@ -78,6 +78,9 @@ body::-webkit-scrollbar-thumb {
 }
 
 main {
+  // Needed if footer is not present.
+  padding-bottom: 0.5em;
+
   // Fluid typography styling
   font-size: clamp(1rem, 0.825rem + 0.875vw, 1.875rem);
 
