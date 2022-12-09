@@ -269,14 +269,23 @@ pre {
   max-width: 100%;
 }
 
+pre p {
+  border: 2px solid grey;
+  border-radius: 5px;
+  padding: 14px;
+}
+
 pre code {
+  word-spacing: normal;
+  letter-spacing: normal;
+  font-family: var(--mono);
   padding-left: 10px;
   color: #e9e9f4;
   background: #282936;
   display: block;
   max-width: 100%;
   overflow-x: scroll;
-  font-size: 0.6em;
+  font-size: 0.7em;
 
   border: 1px solid #282936;
   border-radius: 10px;
@@ -299,6 +308,14 @@ pre code {
     border-radius: 8px;
     border: 2px solid white; /* should match background, can't be transparent */
     background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  div {
+    white-space: pre-wrap;
+    white-space: -moz-re-wrap !important;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
   }
 }
 
