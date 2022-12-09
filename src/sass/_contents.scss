@@ -19,6 +19,7 @@
     --note: #4d5b7c;
     --pdfLink: #ff0000;
     --drop: #903;
+    --initialLine: #ad2271;
   }
 
   &[color-mode="dark"] {
@@ -36,7 +37,8 @@
     --bq-back: #43655a;
     --note: #c67da6;
     --pdfLink: #008be4;
-    --drop: #ffff00;
+    --drop: #a8870e;
+    --initialLine: #00bfff;
   }
 
   --sans: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
@@ -201,9 +203,36 @@ p:not(.nostyle):first-child::first-letter {
   padding-left: 3px;
 }
 
+p:first-of-type:first-line {
+  @include color-var("color", initialLine);
+}
+
 h1:not(.site-title) {
   font-size: 2em;
   margin: 0.67em 0;
+  text-align: center;
+}
+
+:root:not([color-mode="dark"]) {
+  h1:not(.site-title) {
+    text-shadow: 0px 1px 1px #ddd, 0px 2px 1px #d6d6d6, 0px 3px 1px #ccc,
+      0px 4px 1px #c5c5c5, 0px 5px 1px #c1c1c1, 0px 6px 1px #bbb,
+      0px 7px 1px #777, 0px 8px 3px rgba(100, 100, 100, 0.4),
+      0px 9px 5px rgba(100, 100, 100, 0.1),
+      0px 10px 7px rgba(100, 100, 100, 0.15),
+      0px 11px 9px rgba(100, 100, 100, 0.2),
+      0px 12px 11px rgba(100, 100, 100, 0.25),
+      0px 13px 15px rgba(100, 100, 100, 0.3);
+  }
+
+  h2:not(.site-subtitle),
+  h3 {
+    text-shadow: 0 1px 0 #ccc, 0 2px 0 #c9c9c9, 0 3px 0 #bbb, 0 4px 0 #b9b9b9,
+      0 5px 0 #aaa, 0 6px 1px rgba(0, 0, 0, 0.1), 0 0 5px rgba(0, 0, 0, 0.1),
+      0 1px 3px rgba(0, 0, 0, 0.3), 0 3px 5px rgba(0, 0, 0, 0.2),
+      0 5px 10px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.2),
+      0 20px 20px rgba(0, 0, 0, 0.15);
+  }
 }
 
 h2:not(.site-subtitle) {
