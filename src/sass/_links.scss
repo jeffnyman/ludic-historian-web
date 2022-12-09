@@ -1,10 +1,13 @@
 @use "./mode" as *;
 
+a {
+  cursor: url("../assets/cursors/link-select.cur"), auto;
+}
+
 a:not([class]) {
   @include color-var("color", primary);
   text-underline-position: under;
   text-decoration: underline 2px;
-  cursor: url("../assets/cursors/link-select.cur"), auto;
 
   &:not(.nostyle) {
     transition: all 0.3s linear;

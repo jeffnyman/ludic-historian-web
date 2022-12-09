@@ -1,7 +1,6 @@
 @use "./mode" as *;
 
 .article-header {
-  // :where(.header-top, .header-bottom) {
   position: sticky;
   top: 0;
   left: 0;
@@ -11,10 +10,13 @@
 }
 
 .article-header .header-top {
-  //top: 0;
   padding: 5px 0;
   color: var(--white);
   background: var(--black);
+
+  button {
+    cursor: url("../assets/cursors/link-select.cur"), auto;
+  }
 }
 
 .article-header .header-bottom {
