@@ -82,10 +82,10 @@ main {
   padding-bottom: 0.5em;
 
   // Fluid typography styling
-  font-size: clamp(1rem, 0.825rem + 0.875vw, 1.875rem);
+  font-size: clamp(1rem, 0.9rem + 0.5vw, 1.5rem);
 
-  @supports not (clamp(1rem, 0.825rem + 0.875vw, 1.875rem)) {
-    font-size: min(max(1rem, 0.825rem + 0.875vw), 1.875rem);
+  @supports not (clamp(1rem, 0.9rem + 0.5vw, 1.5rem)) {
+    font-size: min(max(1rem, 0.9rem + 0.5vw), 1.5rem);
   }
 }
 
@@ -98,7 +98,6 @@ article {
   padding: 1.5rem 3rem;
 
   max-width: 75ch;
-  // max-width: clamp(16rem, 90vw, 100rem);
 
   border-radius: var(--articleRadius);
   box-shadow: 0 1px 7px hsla(0, 0%, 0%, 0.2);
