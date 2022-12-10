@@ -285,7 +285,7 @@ pre code {
   display: block;
   max-width: 100%;
   overflow-x: scroll;
-  font-size: 0.7em;
+  font-size: 0.8em;
 
   border: 1px solid #282936;
   border-radius: 10px;
@@ -311,6 +311,7 @@ pre code {
   }
 
   div {
+    font-family: var(--mono);
     white-space: pre-wrap;
     white-space: -moz-re-wrap !important;
     white-space: -pre-wrap;
