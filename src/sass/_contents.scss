@@ -320,6 +320,25 @@ pre code {
   }
 }
 
+pre.long {
+  border: 1px solid gray;
+  text-align: justify;
+  font-size: 0.7em;
+  margin-left: 40px;
+  margin-right: 40px;
+  padding: 10px;
+  background-color: white;
+  white-space: pre-line; /* CSS3 browsers  */
+  white-space: -moz-pre-line !important; /* 1999+ Mozilla  */
+  white-space: -pre-line; /* Opera 4 thru 6 */
+  white-space: -o-pre-line; /* Opera 7 and up */
+  word-wrap: break-word; /* IE 5.5+ and up */
+
+  &.strong {
+    font-weight: bold;
+  }
+}
+
 .note {
   border: 1px solid rgb(107, 113, 177);
   @include color-var("color", note);
