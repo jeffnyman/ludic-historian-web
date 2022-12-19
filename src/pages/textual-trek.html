@@ -341,6 +341,230 @@
           <li>1973 &mdash; HP Library inclusion</li>
         </ul>
       </section>
+
+      <section>
+        <h2>Play the Original?</h2>
+
+        <p>
+          It's difficult to play the original incarnation of Mike Mayfield's game or, rather, the "original" even from 1973. The only way to do this in a way that's even appropriately retro would be to try to play it on an HP 2000 emulator. You can attempt to use <a href="http://simh.trailing-edge.com/">SIMH</a> for this. This program attempts to simulate several minicomputer variants.
+        </p>
+
+        <p>
+          If you want to save yourself some pain, you might want to try to find already running simulators. Two known ones are the following:
+        </p>
+
+        <ul>
+          <li>mickey.publicvm.com</li>
+          <li>hp2000.brighton.ac.uk</li>
+        </ul>
+
+        <p>
+          To do this, on your system of choice launch a terminal that has access to a telnet program. You'll need one that won't be confused by the HP's end-of-line characters. Then pick one of the above endpoints and telent into it:
+        </p>
+
+        <ul>
+          <li><code>telnet hp2000.brighton.ac.uk</code></li>
+          <li><code>telnet mickey.publicvm.com</code></li>
+        </ul>
+
+        <p>
+          Once in the system, you'll need to do the following commands one after the other:
+        </p>
+
+        <ul>
+          <li><code>CTRL+m,CTRL+j</code></li>
+        </ul>
+
+        <p>
+          Finally, enter the following one after the other:
+        </p>
+
+        <ul>
+          <li><code>HELLO-T001,HP2000,1</code></li>
+          <li><code>GROUPS</code></li>
+          <li><code>EXECUTE-*STTR1</code></li>
+        </ul>
+
+        <p>
+          That should work for you to get you playing. Quitting is a little trickier. Once you're in game, you can use the command 7 and then command 2. Then enter a long string of characters at the prompt for using the calculator. Theoretically this causes a string overflow and breaks out of the program although I've found this doesn't always happen. But if it does happen for you, then you can just type the following:
+        </p>
+
+        <ul>
+          <li><code>BYE</code></li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>1973 Variants</h2>
+
+        <p>
+          According to Mayfield's account, it was apparently the 1973 version of <em>Star Trek</em> that a guy named David Ahl got his hands on. This is going to take us back to that <em>101 BASIC Computer Games</em> book we started with.
+        </p>
+
+        <p>
+          David Ahl worked at Digital Equipment Corporation (DEC) in the education department and his main job was publishing a newsletter which often included type-in games. Ahl was apparently so impressed with <em>Star Trek</em> that he ported it to DEC BASIC and sent it out in a newsletter that DEC distributed. Now here's where we get a little source material confusion in terms of surviving historical artifacts.
+        </p>
+
+        <p>
+          First I'll note that Pete Turnbull created a <a href="http://www.dunnington.info/public/startrek/">historical Star Trek game page</a>. However, I've found at least some questionable things on there and the provenance is often entirely unstated or just assumed for many of the artifacts. That being said, Turnbull lists one version as the following:
+        </p>
+
+        <ul>
+          <li><a href="../assets/source/startrek/spacwr.bas" target="_blank">spacwr.bas</a> - DEC BASIC conversion of Mike Mayfield's STTR1, 1973</li>
+        </ul>
+
+        <p>
+          This version is different than what's printed in <em>101 BASIC Computer Games</em> but there are a few source code lines in question that differ from the Mayfield version <em>and</em> that appear in the book, suggesting this might have been an early incarnation of what went in the book. I'll come back to all that when we dig into the code.
+        </p>
+
+        <p>
+          Turnbull then lists another variant that he says is a DEC BASIC-PLUS version from David Ahl, and presumably from around the 1973 timeframe but, in fact, this appears to be an entirely different variant from the 1980s. This notion of inaccurate variants and the historical record is important so let's do a brief aside on this.
+        </p>
+      </section>
+
+      <section>
+        <h3>Historical Caution and Artifacts</h3>
+
+        <p>
+          Pete Turnbull lists the following variant on this page:
+        </p>
+
+        <ul>
+          <li><a href="../assets/source/startrek/strtr1.bas" target="_blank">strtr1.bas</a> - DEC BASIC-PLUS, probably from David Ahl (instructions)</li>
+          <li><a href="../assets/source/startrek/strtrk.bas" target="_blank">strtrk.bas</a> - DEC BASIC-PLUS, probably from David Ahl (the game)</li>
+        </ul>
+
+        <p>
+          However, if you do a little digging you'll find this variant comes from the early 1980s. Specifically, looking through an archived boot disk called RL2 that hosts the RSTS/E v7.0 operating system, you'll find the following directory listing:
+        </p>
+
+        <pre><code>
+          DIR
+           Name .Ext    Size   Prot    Date       SY:[11,70]
+          ACEY  .BAS       5   &lt; 60> 31-Oct-76
+          TREK  .BAS      16   &lt; 60> 31-Oct-76
+          TREK  .DOC       9   &lt; 60> 31-Oct-76
+          ANIMAL.BAS       5   &lt; 60> 31-Oct-76
+          STRTRK.BAS      27   &lt; 60> 31-Mar-81
+          STRTR1.BAS       9   &lt; 60> 31-Mar-81
+          ADVENT.DOC       4   &lt; 60> 20-Jul-85
+          ADVENT.SAV      93   &lt;124> 20-Jul-85
+          ADVENT.VAR      22   &lt; 60> 20-Jul-85
+          ADVTXT.TXT     125   &lt; 60> 20-Jul-85
+          SYSMAC.SML      42   &lt; 60> 13-Mar-77
+          HELLO .MAC       1   &lt; 60> 13-Mar-77
+          BOOT  .MAC      24   &lt; 60> 13-Mar-77
+        </code></pre>
+
+        <p>
+          Ntoice the files "STRTRK.BAS" and "STRTR1.BAS"? Those are, at least, the filenames that Turnbull listed and they are dated to March of 1981. But are these actually the same game? Well, to do that you have to either access their source code or play them.
+        </p>
+
+        <p>
+          The way I found to do this was to access an online <a href="https://skn.noip.me/pdp11/pdp11.html">PDP 11/70 emulator</a>. If you want to try to access this yourself, here are the steps I had to do in the web-based console. The bolded parts are what I typed in.
+        </p>
+
+        <ul>
+          <li>Boot> <strong>boot rl2</strong></li>
+          <li>Option: <strong>CTRL+J</strong></li>
+          <li>Table suboption? <strong>EXIT</strong></li>
+          <li>DD-MMM-YY? <strong>31-OCT-81</strong></li>
+          <li>12:00 PM? <strong>9:32</strong></li>
+          <li>Command File Name? <strong>CTRL+J</strong></li>
+        </ul>
+
+        <p>
+          At this point you'll see a message about "Detaching . . ." and you'll be able to type again. Do the following:
+        </p>
+
+        <ul>
+          <li><strong>I11,70</strong></li>
+          <li>Password: <strong>PDP</strong></li>
+        </ul>
+
+        <p>
+          This might give you a message about "Welcome to RSTS/E v7.0 time sharing" and a "Ready" prompt. Then you can type the following:
+        </p>
+
+        <ul>
+          <li><strong>DIR</strong></li>
+          <li><strong>RUN STRTRK</strong></li>
+        </ul>
+
+        <p>
+          And with that "simple" bit of steps, you should be off to the races and able to play the game. The main thing to note is that the opening text &mdash; "AS COMMANDER OF THE UNITED STARSHIP ENTERPRISE" &mdash; matches the above mentioned source files provided by Turnbull but is different than any of the text provided by the Mayfield game or by Ahl's versions of it.
+        </p>
+
+        <p>
+          Incidentally, in that directory listing I showed you, you might also notice the mention of "TREK.BAS" and "TREK.DOC". Those, too, are relevant because they are also listed by Turnbull on his archived list but also seem inaccurate on a few points. We'll jump back to that one as I continue this history.
+        </p>
+
+        <p>
+          This aside is a cautionary tale of being a historian when there are many artifacts to deal with. You have to find corroborating evidence, particularly if the source files in question do not offer details such as date or authorship. I should also note that everthing I write here is a moment in time. By the time you read this, it's possible Pete updated his own site as he learns more about his sources.
+        </p>
+      </section>
+
+      <section>
+        <h2>More on 1973 Variants</h2>
+
+        <p>
+          Pete Turnbull mentions two other sources in his list:
+        </p>
+
+        <ul>
+          <li><a href="../assets/source/startrek/trek.bas" target="_blank">TREK.BAS</a> - adapted for RSTS-11 BASIC, by Aron Insinga from 1973</li>
+          <li><a href="../assets/source/startrek/trek.txt" target="_blank">TREK.DOC</a> - instructions for TREK.BAS</li>
+        </ul>
+
+        <p>
+          You can follow the steps from the previous section and do the following to run that version of the game:
+        </p>
+
+        <ul>
+          <li><strong>RUN TREK</strong></li>
+        </ul>
+
+        <p>
+          If you do run that game and ask it for instructions, you will find the instructions are exactly that as listed in the above "TREK.DOC". This mentions a date of 20 July 1973 and an author of Aron K. Insinga as well as something called "Project Delta." Turnbull apparently received a communication from Aron about his version. According to Aron:
+        </p>
+
+        <blockquote>
+          Back in the 1970s there was a computer center in Delaware that was used by the high schools in the state and was staffed by students. We had the 2nd RSTS-11 system that DEC sold. Kids were using the Project DELTA Teletype and DataPhone at their school to make long distance calls to a time-sharing system at the HP facility in Avondale, PA. They were using the system for hours to play this Star Trek game and the phone bill was a big problem. I was told that it would help a lot if I could get it to run on our RSTS-11 (PDP-11/20) system at Project DELTA.
+        </blockquote>
+
+        <p>
+          However, the "TREK.BAS" file that is provided is definitely not from 1973 and doesn't seem to match the game. Notice, for example, in the source that "Romulans" are mentioned. Further, digging into the source itself you can see LOCATE and COLOR commands, among others, that were intended for use on interactive terminals with color support. That means the DEC VT240's at a minimum, which puts us in the 1980s. And that makes a great deal of sense because the source code also indicates a version “BY ENSIGN SOFTWARE” that is copyrighted as 1982.
+        </p>
+
+        <p>
+          I do have what appears to be the actual version from Aron in <a href="../assets/source/startrek/trek-aron.bas" target="_blank">trek-aron.bas</a>. This was pulled from an RSTS-11 library index, the specific operating system apparently being an RSTS V4A-12, with the index itself being from the DECUS catalog.
+        </p>
+
+        <p>
+          I'll note one more variant here that does seem to be from 1973, specifically 5 April 1973. This was a variant of the game, apparently written at the University of Texas, as a Taurus BASIC variant by Grady Hicks and Jim Korp. You can see the source of this in <a href="../assets/source/startrek/ut-trek.bas" target="_blank">ut-trek.bas</a>. Interestingly, this version mentions that the "GENERAL IDEA STOLEN FROM PENN. U."
+        </p>
+
+        <p>
+          A side note to this version is that some guys named Dave Matuszek and Paul Reynolds, at the University of Texas-Austin, played the game and noted that the Hicks version they played threw a lot of long quotes from Marcus Aurelius at the player. I mention this because of some interesting detective work done by "Peter B" in his post <a href="http://tleaves.com/post/aurelius-star-trek/">The Game Detective: The 'Marcus Aurelius' Version of Star Trek</a>.
+        </p>
+
+        <p>
+          The date of this latter version, April 1973, is interesting because we are now finally getting back to David Ahl's work and the publication of <em>101 BASIC Computer Games</em>. This book actually saw three printings: July 1973, April 1974, and March 1975. Apparently Ahl's update of Mayfield's 1972 version was in the earliest printing. Aron's version could have been based on that, therefore, while that from Hicks and Korp was not.
+        </p>
+
+        <p>
+          This actually takes us to another variant, believe it or not. The context here for Ahl's book is that the first printing in 1973 had the programs written in PDP-11 RSTS BASIC. The programs from that book were ported to OS/8 BASIC by Kay Fisher. This was so that the programs could run on a PDP-8.
+        </p>
+
+        <ul>
+          <li><a href="../assets/source/startrek/spacwr-os8.bas" target="_blank">spacwr-os8.bas</a> - game</li>
+          <li><a href="../assets/source/startrek/spacwr-os8-in.bas" target="_blank">spacwr-os8-in.bas</a> - instructions</li>
+        </ul>
+
+        <p>
+          Since this is most definitely a direct port, we still have the title of "spacwr." The listing in Ahl's book does say “SPACEWAR BASED ON STAR TREK.”
+        </p>
+      </section>
     </article>
 
     <div class="scrolltop-wrap">
