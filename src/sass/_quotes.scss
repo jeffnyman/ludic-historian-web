@@ -4,7 +4,7 @@ blockquote {
   position: relative;
   width: 80%;
   margin: 50px auto;
-  padding: 1.2em 30px 1.2em 75px;
+  padding: 1.2em 30px 1.2em 55px;
   @include color-var("color", bq-color);
   @include color-var("background-color", bq-back);
   border-left: 8px solid #78c0a8;
