@@ -138,7 +138,7 @@
         </ul>
 
         <p>
-          An important point there is that "ELIZA" is actually the name of the generalized conversation system that Weizenbaum came up with. Different scripts could be plugged into ELIZA to represent different characters or agents. The focus of the system was on the ability to converse with these characters/agents.
+          An important point there is that "ELIZA" is actually the name of the generalized conversation system that Weizenbaum came up with. Different scripts could be plugged into <em>ELIZA</em> to represent different characters or agents. The focus of the system was on the ability for users to converse with these characters/agents.
         </p>
 
         <p>
@@ -146,11 +146,17 @@
         </p>
 
         <p>
-          First, the context is that <em>ELIZA</em> itself was a reference to a working-class character in the play <em>Pygmalion</em>, written by George Bernard Shaw. In the play, Eliza Doolittle has to learn how to converse in a certain way. Essentially Eliza wants to interact with a different class of people and, as such, has to learn the skills of clear and expressive speech. Eliza Doolittle was thus a commoner who is “programmed” to speak and comport herself like a woman of the upper classes.
+          First, the context is that <em>ELIZA</em> itself was a reference to a working-class character in the play <em>Pygmalion</em>, written by George Bernard Shaw. In the play, Eliza Doolittle has to learn how to converse in a certain way. Essentially, Eliza wants to interact with a different class of people and, as such, has to learn the skills of clear and expressive speech. Eliza Doolittle was thus a commoner who is “programmed” to speak and comport herself like a woman of the upper classes.
         </p>
 
         <p>
           Thus here, at a time when computers just started to use integrated chips, we see the idea of a computer program perhaps learning to interact with people and thus requiring the skills to converse with people.
+        </p>
+
+        <img class="framed" src="../assets/images/eliza/eliza-weizenbaum-1966.jpg" alt="Joseph Weizenbaum in 1966 interacting with ELIZA">
+
+        <p>
+          The above is an image from 1966 of Joseph Weizenbaum interacting with ELIZA via a teletype interface.
         </p>
       </section>
 
@@ -162,44 +168,139 @@
         </p>
 
         <p>
-          Weizenbaum's ELIZA was intended as a general conversational agent but it's also important to note that one of his goals was to show the superficiality of communication between humans and machines.
+          Weizenbaum's <em>ELIZA</em> was intended as a general conversational agent but it's also important to note that one of his goals was to show the superficiality of communication between humans and machines.
         </p>
 
         <p>
-          The engine interpreted a separate, domain-specific script that determined its style of conversation. The most well-known script is the aforementioned "DOCTOR". This is the one that carries on the well-known "Rogerian therapist" conversations that appear in Weizenbaum's 1966 paper, and which are most commonly associated with the name "ELIZA." Indeed, the name "ELIZA" has basically come to mean "the ELIZA agent running the DOCTOR script." ELIZA can be seen as the precursor of many of the conversation interfaces and chatbots that we have become so familiar with today, such as Siri, but it worked over a much more clunky typewriter-based console.
+          As mentioned earlier, the engine interpreted a separate, domain-specific script that determined its style of conversation. The most well-known script is the aforementioned "DOCTOR" agent. This is the one that carries on the well-known "Rogerian therapist" conversations that appear in Weizenbaum's 1966 paper, and which are most commonly associated with the name "ELIZA." Indeed, the name "ELIZA" has basically come to mean "the ELIZA agent running the DOCTOR script." <em>ELIZA</em> can be seen as the precursor of many of the conversation interfaces and chatbots that we've become so familiar with today, such as Siri or maybe even ChatGPT, but it worked over a much more clunky typewriter-based console.
         </p>
 
         <p>
-          The original ELIZA program was implemented on an <a href="https://www.ibm.com/ibm/history/exhibits/mainframe/mainframe_PP7094.html">IBM 7094</a> which was part of the Project MAC <a href="https://en.wikipedia.org/wiki/Compatible_Time-Sharing_System">Compatible Time-Sharing System</a> at MIT. The system was written in <a href="https://en.wikipedia.org/wiki/MAD_(programming_language)">MAD</a> (<strong>M</strong>ichigan <strong>A</strong>lgorithm <strong>D</strong>ecoder) using some <a href="https://en.wikipedia.org/wiki/SLIP_(programming_language)">SLIP</a> (<strong>S</strong>ymmetric <strong>LI</strong>st <strong>P</strong>rocessor) libraries for the language.
+          The original <em>ELIZA</em> program was implemented on an <a href="https://www.ibm.com/ibm/history/exhibits/mainframe/mainframe_PP7094.html">IBM 7094</a> which was part of the Project MAC <a href="https://en.wikipedia.org/wiki/Compatible_Time-Sharing_System">Compatible Time-Sharing System</a> at MIT. The system was written in <a href="https://en.wikipedia.org/wiki/MAD_(programming_language)">MAD</a> (<strong>M</strong>ichigan <strong>A</strong>lgorithm <strong>D</strong>ecoder) using some <a href="https://en.wikipedia.org/wiki/SLIP_(programming_language)">SLIP</a> (<strong>S</strong>ymmetric <strong>LI</strong>st <strong>P</strong>rocessor) libraries for the language.
         </p>
 
         <p>
-          You can see a <a href="../assets/docs/manuals/SLIP-manual.pdf" data-size="4 MB">MAD-SLIP manual</a> from a long, three-volume 7090 user's guide.
+          You can see a <a href="../assets/docs/manuals/SLIP-manual.pdf" data-size="4 MB">MAD-SLIP manual</a> from a long, three-volume 7090 user's guide. There's also a document about the <a href="../assets/docs/manuals/MAD-structure.pdf" data-size="2 MB">syntactic structure of MAD</a>. Via the HathiTrust, you can also check out a <a href="https://babel.hathitrust.org/cgi/pt?id=mdp.39015021689271&view=1up&seq=5">primer for the MAD language</a>.
         </p>
 
         <p>
-          Only the DOCTOR script appears in the 1966 paper, not the ELIZA code that interprets that script, although the algorithm is described in a lot of detail.
+          Only the DOCTOR script appears in the previously mentioned 1966 paper, not the ELIZA code that interprets that script, although the algorithm is described in a lot of detail.
         </p>
 
         <p>
-          The common misconception that ELIZA was originally written in Lisp arose because shortly after the publication of the 1966 paper, Bernie Cosell wrote a version in Lisp, based upon the description of the algorithm in the 1966 paper. Cosell's version used a version of the published script, but he never saw the original ELIZA.
+          The common misconception that <em>ELIZA</em> was originally written in Lisp arose because shortly after the publication of the 1966 paper, Bernie Cosell wrote a version in Lisp, based upon the description of the algorithm in the 1966 paper. Cosell's version used a version of the published script, but he apparently never saw the original <em>ELIZA</em> in operation.
+        </p>
+
+        <p>
+          While the article does not list the source code, we do actually have it. This is due thanks to the work of Jeff Shrage and MIT Special Archival Librarian Myles Crowley. They did some archaeology into Weizenbaum's archives at MIT and they found a set of "Computer Conversations" files. One of those provided <a href="../assets/docs/eliza/ORIGINAL-ELIZA-IN-MAD-SLIP-CC0-For-Release.pdf" data-size="2 MB">the complete source code listing of <em>ELIZA</em> in MAD-SLIP</a> along with the DOCTOR script. The Weizenbaum estate gave permission to open source everthing under a Creative Commons CC0 public domain license.
+        </p>
+
+        <p>
+          Some work has been done to make this code a little easier to analyze.
+        </p>
+
+        <ul>
+          <li><a href="https://github.com/jeffshrager/elizagen.org/blob/master/1965_Weizenbaum_MAD-SLIP/MAD-SLIP_transcription.txt">Core code transcription</a> (by Anthony Hay)</li>
+          <li><a href="https://github.com/jeffshrager/elizagen.org/blob/master/1965_Weizenbaum_MAD-SLIP/ELIZA_transcription_annotated_20220216.txt">Annotated core code transcription</a> (by Anthony Hay)</li>
+          <li><a href="https://github.com/jeffshrager/elizagen.org/blob/master/1965_Weizenbaum_MAD-SLIP/MAD-SLIP_translation.txt">Core code translation</a> (by Jeff Shrager)</a></li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>ELIZA as AI?</h2>
+
+        <p>
+          Historically, and even today, there are some people who very inaccurately equate <em>ELIZA</em> with artificial intelligence, but it most certainly was nothing of the sort. Such people need to read Weizenbaum's 1966 article referenced above. There is no mention of "artificial intelligence" in this at all. And that's for a very good reason: <em>ELIZA</em> was not in any way, shape or form even an approximation of machine learning, much less artificial intelligence.
+        </p>
+
+        <p>
+          An <em>ELIZA</em> manual, for a version written for the TRS-80 by Harvey Gerst, ended with the following:
+        </p>
+
+        <blockquote>
+          Please keep in mind that Eliza is a 'simulation' of Artificial Intelligence. We do not believe that she is really capable of any independent thought, so we strongly advise against taking any of her comments seriously — especially her evaluations.
+
+          She is what she is — Eliza — no more, and no less. Enjoy her company.
+        </blockquote>
+
+        <p>
+          Most of that was exactly correct except for that first sentence. In fact, it's amazing how Gerst seems to contradict himself about something that is "intelligent" but has no "independent thought."
+        </p>
+
+        <p>
+          In no sense does <em>ELIZA</em> actually understand anything the "player" of the simulation enters in. The engine itself is simply an elaborate text-generation engine. The engine searches for patterns in the entered text which can serve as hooks to be manipulated and recombined into responses. As Weizenbaum says in his paper:
+        </p>
+
+        <blockquote>
+          Input sentences are analyzed on the basis of decomposition rules which are triggered by key words appearing in the input text. Responses are generated by reassembly rules associated with selected decomposition rules.
+        </blockquote>
+
+        <p>
+          Thus, as Weizenbaum describes it, the simulation worked by decomposing a given data string into parts and then reassembling certain parts into another data string.
+        </p>
+
+        <p>
+          On the wider topic of understanding, Weizenbaum wrote about this in a 1967 follow-up paper.
+        </p>
+
+        <ul>
+          <li><em>Communications of the ACM</em> &mdash; "Computational Linguistics" - "Contextual Understanding by Computers" (Vol 10, No 8 - Aug 1967) [ <a href="../assets/docs/eliza/weizenbaum-1967.pdf" data-size="1 MB">PDF version</a> ]</li>
+        </ul>
+
+        <p>
+          It's probably also worth checking out the <a href="../assets/docs/eliza/weizenbaum-Computer-Power-and-Human-Reason.pdf" data-size="2 MB">introduction to Weizenbaum's 1976 <em>Computer Power and Human Reason</em></a>. You can also see a version of this <a href="../assets/docs/eliza/weizenbaum-Computer-Power-and-Human-Reason-newmedia.pdf" data-size="100 KB">prefaced with some commentary in the New Media Reader</a>.
         </p>
       </section>
-      
+
+      <section>
+        <h2>The ELIZA Effect</h2>
+
+        <p>
+          <em>ELIZA</em> also was the namesake for the "ELIZA effect," which, in computer science, is the tendency to unconsciously assume computer behaviors are analogous to human behaviors and thus anthropomorphizing machines.
+        </p>
+
+        <p>
+          In its specific form, the "ELIZA effect" refers only to "the susceptibility of people to read far more understanding than is warranted into strings of symbols &mdash; especially words &mdash; strung together by computers." Though designed strictly as a mechanism to support "natural language conversation" with a computer, <em>ELIZA</em> was found to be surprisingly successful in eliciting emotional responses from users who, in the course of interacting with the program, began to ascribe understanding and motivation to the program's output.
+        </p>
+
+        <p>
+          This was something that particularly worried Weizenbaum.
+        </p>
+      </section>
+
+      <section>
+        <h2>The Legacy</h2>
+
+        <p>
+          <em>ELIZA</em> is one of those programs that has been recreated by numerous people over time so tracing any sort of lineage of its variations is not really all that informative. <em>Creative Computing</em> published <a href="../assets/docs/eliza/ELIZA-Creative-Computing-v03n04-July-Aug-1977.pdf" data-size="400 KB">a version of the <em>ELIZA</em> "Doctor" in BASIC</a> in <em>The Best of Creative Computing Volume 3</em> by Jeff Shrager and Steve North in its July/August 1977 issue. In North's words:
+        </p>
+
+        <blockquote>
+          Although the program is an inferior imitation of the original, it does work.
+        </blockquote>
+
+        <p>
+          This version's limitations in comparison with Weizenbaum's original derive from being written in BASIC and from the necessity of running in just 16K of RAM. It's nevertheless impressive in its way for what it is, and would serve as a springboard for countless sequels and derivations over the next decade.
+        </p>
+
+        <p>
+          On the one hand, <em>ELIZA</em> can be seen as a bit of a dead end. On the other hand, however, it was a way of exploring a simulated "space" within the computer. In this case, that "space" was an abstraction of a conversation. And this implementation did show one way of conversing with the computer that wasn't simply entering in number, as was the case with <em>The Sumerian Game</em> or <em>Star Trek</em>.
+        </p>
+
+        <p>
+          There are a couple of interesting forerunner aspects here: we have a text-based input system that responds to player input and a generalized system for creation of different scripts. These ideas would be something that would come up time and again in the later adventure genre that would be a cornerstone of gaming. A key design element is that the script (like "Doctor") was data; it was not part of the <em>ELIZA</em> program itself.
+        </p>
+
+        <p>
+          The wider context here is important in that almost all computer / human interaction of the era was in the form of a textual dialog; command-line interfaces ruled the day. When someone "played" <em>ELIZA</em> they entered into a text-based dialog with a computer program. Later games &mdash; like <em>Adventure</em> and its descendants &mdash; allow the player to manipulate a virtual world through textual commands.
+        </p>
+
+        <p>
+          That said, <em>ELIZA</em>'s impact on those is probably a bit negligible in reality. Those later games had to "understand" a bit more because they had to maintain a "world model" which <em>ELIZA</em> did not. The really unique element shared by the <em>ELIZA</em> system and games like <em>Adventure</em> was the pseudo-natural language element of that interaction. Just on that basis alone, <em>ELIZA</em> stands as an important forerunner to full-fledged text adventures and, eventually, interactive fiction, even though the lineage is certainly not direct.
+        </p>
+      </section>
     </article>
   </main>
-
-  <!-- <footer class="article-footer">
-    <div class="d-flex justify-content-between align-items-center">
-      <a rel="license" class="nostyle" href="http://creativecommons.org/licenses/by-sa/4.0/">
-        <img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" />
-      </a>
-
-      <div class="d-flex">
-        This work is licensed under a&nbsp;<a rel="license" class="nostyle" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
-      </div>
-    </div>
-  </footer> -->
 
   <div class="progress-bar"></div>
 

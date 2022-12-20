@@ -359,7 +359,7 @@
         </ul>
 
         <p>
-          To do this, on your system of choice launch a terminal that has access to a telnet program. You'll need one that won't be confused by the HP's end-of-line characters. Then pick one of the above endpoints and telent into it:
+          To do this, on your system of choice launch a terminal that has access to a telnet program. You'll need one that won't be confused by the HP simulators end-of-line characters, which get interpreted by some terminals as unicode. Then pick one of the above endpoints and telent into it:
         </p>
 
         <ul>
@@ -368,7 +368,7 @@
         </ul>
 
         <p>
-          Once in the system, you'll need to do the following commands one after the other:
+          Once in the system, you'll need to get to a login prompt. You do that with the following keypresses one after the other:
         </p>
 
         <ul>
@@ -386,7 +386,15 @@
         </ul>
 
         <p>
-          That should work for you to get you playing. Quitting is a little trickier. Once you're in game, you can use the command 7 and then command 2. Then enter a long string of characters at the prompt for using the calculator. Theoretically this causes a string overflow and breaks out of the program although I've found this doesn't always happen. But if it does happen for you, then you can just type the following:
+          That should work for you to get you playing. The game will ask if you want instructions and, if you do, make sure you answer the prompt as <code>YES</code>, full word, all capital letters.
+        </p>
+
+        <p>
+          One thing to note is that this game was originally played on teletypes. So when you print out the instructions as above, it's likely that you won't actually see them because they simply scroll up too fast.
+        </p>
+
+        <p>
+          Quitting is a little trickier. Once you're in game, you can use the command 7 and then command 2. Then enter a long string of characters at the prompt for using the calculator. Theoretically this causes a string overflow and breaks out of the program although I've found this doesn't always happen. But if it does happen for you, then you can just type the following:
         </p>
 
         <ul>
@@ -562,7 +570,18 @@
         </ul>
 
         <p>
-          Since this is most definitely a direct port, we still have the title of "spacwr." The listing in Ahl's book does say “SPACEWAR BASED ON STAR TREK.”
+          Since this is most definitely a direct port, we still have the title of "spacwr." The listing in Ahl's book does say “SPACEWAR BASED ON STAR TREK.” The code listing itself, at least from the 1975 version, shows the following:
+        </p>
+
+        <pre><code>
+          100 REM *** PROGRAM SIMULATER IV PROGRAM STARTREK
+          110 REM *** WRITTEN BY MIKE MAYFIELD, CENTERLINE ENGINEERING
+          120 REM *** DEBUGGING AND MINOR REVISIONS BY LEO LAVERDURE, IRA POTEL,
+          130 REM *** MARY COLE, AND DAVE AHL OF DIGITAL
+        </code></pre>
+
+        <p>
+          So it sounds like multiple people had a hand in changing the source code. That said, however, if you do a comparison of Mayfield's and the version published in the book, you'll find the differences are actually relatively trivial. All of Mayfield's algorithms, numbers, and the core text remain entirely identical. In fact, Mayfield's original line numbering is preserved throughout the version published in <em>101 BASIC Computer Games</em>.
         </p>
       </section>
 
@@ -586,6 +605,533 @@
 
         <p>
           As a bit of a side note, The People's Computer Company, a group I'll have much more to say about in other articles, published a book in 1975 called "What To Do When You Hit Return" and you can see some <a href="../assets/docs/startrek/Star-Trek-1975-What-to-Do.pdf" data-size="1 MB">information on <em>Star Trek</em> in the the book</a>.
+        </p>
+
+        <p>
+          If you check out the document, notice the <code>GET - $STTR1</code> on the first page. That would clearly suggest the original title as produced by Mike Mayfield as opposed to other variants by Ahl or others. That said, no listing of the game is provided in that book so it's hard to tell exactly what's being referenced.
+        </p>
+
+        <p>
+          With the above history understood, we can now jump into the game itself a little bit.
+        </p>
+      </section>
+
+      <section>
+        <h2>The Narrative</h2>
+
+        <p>
+          The narrative backdrop in the game is fairly simple, given the source material. You're ostensibly playing Captain James T. Kirk, captain of the <em>USS Enterprise</em>. Truth be told, none of the characters from the show are actually referenced at all in the game.
+        </p>
+
+        <p>
+          Your mission is to destroy a certain number of enemy Klingon spaceships. Keep in mind: this is during the timeframe of The Original Series, when the Klingon Empire and the United Federation of Planets were usually in some form of Cold War. In this game, that Cold War apparently got hot.
+        </p>
+
+        <p>
+          The narrative here is pretty simple and mostly plays out in the context of the gameplay. So let's look at that next and I'll intersperse some implementation details as we go.
+        </p>
+      </section>
+
+      <section>
+        <h2>The Gameplay</h2>
+
+        <p>
+          Let's take a look at how a given gameplay session starts and look at what you see.
+        </p>
+
+        <pre><code>
+          YOU MUST DESTROY 18 KLINGONS IN 30 STARDATES WITH 2 STARBASES
+          ---------------------------------
+                                   &lt;*>
+                    *                             STARDATE         3200
+                            *           *         CONDITION        GREEN
+                                                  QUADRANT         4,4
+                *           *                     SECTOR           1,7
+                                                  ENERGY           3000
+                                                  PHOTON TORPEDOES 10
+                                                  SHIELDS             0
+          ---------------------------------
+          COMMAND:?
+        </code></pre>
+
+        <p>
+          The <code>&lt*></code> in the above output represents the Enterprise and any <code>*</code> represents a star. The status text on the right indicates that the <em>Enterprise</em> is in quadrant (4,4) and sector (1,7). So if I'm at (1,7) then it's 1 down and 7 over. For this grid, (1,1) would be at the top left and (8,8) would be at the bottom right.
+        </p>
+        
+        <p>
+          The gameplay loop consists of entering a command, in the form of a number, at the <code>COMMAND</code> prompt you are given for each turn. I'll cover a few of the commands as we go along here just so you can see how this worked.
+        </p>
+
+        <p>
+          In Mayfield's game you control the USS Enterprise, moving through an 8&times;8 grid of galactic quadrants. Each such quadrant is itself divided into an 8&times;8 grid. Within each quadrant grid, the game populates the space in that grid with stars, Klingon ships, and starbases.
+        </p>
+
+        <p>
+          The goal is to find enemy Klingon ships and then use your phasers and torpedos to take them out. You have to do this before time expires ("30 STARDATES" as given above) or your ship runs out of power. Starbases can refuel your ship and restock your torpedos but time must be spent finding them and docking to receive their benefits. And since there's only two in the above playthrough, that can be problematic.
+        </p>
+
+        <p>
+          What you end up with, in terms of gameplay mechanics, is a focus on resource management. Arguably <em>ROCKET</em> was very much like that as well, with fuel being the resource. This same theme emerges in <em>The Sumerian Game</em> and <em>The Oregon Trail</em>.
+        </p>
+      </section>
+
+      <section>
+        <h3>Construct the Galaxy</h3>
+
+        <p>
+          The way galaxy generation works here is that the program iterates through each of the sixty-four quadrants and populates them based on probability. For example, how the game populates the Klingon enemies is shown in this code:
+        </p>
+
+        <pre><code>
+          520  R1=RND(1)
+          530  IF R1>.98 THEN 580
+          540  IF R1>.95 THEN 610
+          550  IF R1>.8 THEN 640
+          560  K3=0
+          570  GOTO 660
+          580  K3=3
+          590  K9=K9+3
+          600  GOTO 660
+          610  K3=2
+          620  K9=K9+2
+          630  GOTO 660
+          640  K3=1
+          650  K9=K9+
+        </code></pre>
+
+        <p>
+          Basically, for any given quadrant, you have a 2% chance of getting three Klingon enemies, a 3% change of getting two enemies, and a 15% chance of getting one enemy. There's an 80% chance that no Klingons at all will be in the area.
+        </p>
+
+        <p>
+          Similarly, here's how starbase placement is calculated:
+        </p>
+
+        <pre><code>
+          660  R1=RND(1)
+          670  IF R1>.96 THEN 700
+          680  B3=0
+          690  GOTO 720
+          700  B3=1
+          710  B9=B9+1
+        </code></pre>
+
+        <p>
+          That's giving a 4% chance of one starbase and a whopping 96% chance of no starbase.
+        </p>
+
+        <p>
+          In the game output, notice the bit of status text off to the right? That comes from this:
+        </p>
+
+        <pre><code>
+          4540 IMAGE  "---------------------------------"
+          4550 IMAGE  8(X,3A)
+          4560 IMAGE  8(X,3A),8X,"STARDATE",8X,5D
+          4570 IMAGE  8(X,3A),8X,"CONDITION",8X,6A
+          4580 IMAGE  8(X,3A),8X,"QUADRANT",9X,D,",",D
+          4590 IMAGE  8(X,3A),8X,"SECTOR",11X,D,",",D
+          4600 IMAGE  8(X,3A),8X,"ENERGY",9X,6D
+          4610 IMAGE  8(X,3A),8X,"PHOTON TORPEDOES",3D
+          4620 IMAGE  8(X,3A),8X,"SHIELDS",8X,6D
+        </code></pre>
+
+        <p>
+          Interestingly, these are not directly executable statements. Instead these are strings that can be referenced in PRINT commands. These were called “image specifiers.” The unquoted symbols get substituted with the values of the refrenced variables.
+        </p>
+      </section>
+
+      <section>
+        <h3>Doing Things in the Galaxy</h3>
+
+        <p>
+          Remember that the goal here is to find quadrants that contain Klingon ships and destroy them. The best way to start off is to use command <code>2</code>, which provides a “long range sensor scan.” This will show conditions in space for one quadrant on each “side” of the <em>Enterprise</em>, with your ship being in the middle of the scan.
+        </p>
+
+        <pre><code>
+          COMMAND:?2
+          LONG RANGE SENSOR SCAN FOR QUADRANT 4,4
+          -----------------
+          :   3 :106 :  7 :
+          -----------------
+          : 106 :  5 :107 :
+          -----------------
+          :   1 :  6 :107 :
+          -----------------
+        </code></pre>
+
+        <p>
+          The resulting table provides information on nine quadrants. The center quadrant is the one you're currently in. The readout there can be confusing, however. The scan is provided in the form XXX, where the digits, in order, refer to number of Klingon ships, number of starbases, and number of stars. So in our quadrant there are 0 Klingon ships, 0 starbases and 5 stars, hence just "5" although that could be thought of as "005".
+        </p>
+
+        <p>
+          The "107" and "106" values indicate some Klingon ships around us.  Notice that there are no starbases in immediate range of us. Given that the game allocated us with only two such starbases at the start, that's not surprising. Clearly we have some areas we can go to in order to combat the Klingons.
+        </p>
+
+        <p>
+          Now, while Kirk was always a bit of a risk-taker, he wasn't necessarily stupid. So we can raise the <em>Enterprise</em> shields using command <code>5</code>.
+        </p>
+
+        <pre><code>
+          COMMAND:?5
+          ENERGY AVAILABLE = 3000       NUMBER OF UNITS TO SHIELDS:?200
+        </code></pre>
+
+        <p>
+          When you do this, the game asks you how much energy you want to provide for the shields out of the 3000 units you have available. It's really not clear at all what your ship can take and how damage impacts your shields. So you just have to sort of figure that out. Here I'm using 200.
+        </p>
+
+        <p>
+          To actually see the status of your ship again, you need to run a “short range scan,” which is command <code>1</code>.
+        </p>
+
+        <pre><code>
+          ---------------------------------
+                                   &lt;*>
+                    *                             STARDATE         3200
+                            *           *         CONDITION        GREEN
+                                                  QUADRANT         4,4
+                *           *                     SECTOR           1,7
+                                                  ENERGY           2800
+                                                  PHOTON TORPEDOES 10
+                                                  SHIELDS           200
+          ---------------------------------
+          COMMAND:?
+        </code></pre>
+
+        <p>
+          Here I can see that my shields went from 0 to 200 and my energy is down correspondingly.
+        </p>
+
+        <p>
+          Incidentally, HP BASIC strings were implemented as a one-dimensional array of bytes. The command <code>DIM S$ [n]</code> reserves <em>n</em> bytes for string <code>S$</code>. Throughout the original STTR1 code, much of the game's “graphical” representation is accomplished by injecting the symbols for the Enterprise ('&lt;*>'), stars ('*'), and Klingons ('+++') into large strings, exploiting HP BASIC's treatment of Strings as special cases of matrices.
+        </p>
+
+        <p>
+          However, HP BASIC strings were limited to seventyt-w characters. For this reason, it seems like Mike Mayfield had to split the 192 (8 &times; 8 &times; 3) characters needed to represent the short range scan view across three string variables: <code>Q$</code>, <code>R$</code>, and <code>S$</code>. Mayfield then had to add code to cascade across the variables when trying to inspect a particular spot in a quadrant.
+        </p>
+
+        <pre><code>
+          Strings   ---------------------------------
+          Q$[01-24]:      *              &lt;*>
+          Q$[25-48]:
+          Q$[49-72]:
+          R$[01-24]:                      *       *
+          R$[25-48]:   *               *       *
+          R$[49-72]:
+          S$[01-25]:           *
+          S$[01-48]:
+                    ---------------------------------
+          COMMAND:?
+        </code></pre>
+
+        <p>
+          The code for some of how that works is:
+        </p>
+
+        <pre><code>
+          270  DIM C$[6],D$[72],E$[24],A$[3],Q$[72],R$[72],S$[48]
+          ...
+          980  A$="&lt;*>"
+          ...
+          5510  REM ******  INSERTION IN STRING ARRAY FOR QUADRANT ******
+          5520  S8=Z1*24+Z2*3-26 (Note: Z1 and Z2 are values between 1 and 8)
+          5530  IF S8>72 THEN 5560
+          5540  Q$[S8,S8+2]=A$
+          5550  GOTO 5600
+          5560  IF S8>144 THEN 5590
+          5570  R$[S8-72,S8-70]=A$
+          5580  GOTO 5600
+          5590  S$[S8-144,S8-142]=A$
+          5600  RETURN
+        </code></pre>
+      </section>
+
+      <section>
+        <h3>Navigating Around the Galaxy</h3>
+
+        <p>
+          Now we can head out for some conflict! Navigating in the game requires two parameters: the direction you want to go and the distance you want to travel. The idea of the “ship course” you set in the game is a circular numerical vector arrangement.
+        </p>
+
+        <pre><code>
+           4  3  2
+            \ ^ /
+             \^/
+          5 ------ 1
+             /^\
+            / ^ \
+           6  7  8
+
+           COURSE
+        </code></pre>
+
+        <p>
+          The y-axis points downwards. Each column is about three characters wide but each row is only one character high. So this isn't really a faithful circular coordinate system. As you can see, the angle goes from 1.0 (inclusive) to 9.0 (exclusive). Distance is measured in “warp factor” units. One “warp factor” is the size of one quadrant, or rather equal to the length/height of a quadrant. So to move to an adjacent sector, you need to move a distance of 1/8 or 0.125.
+        </p>
+
+        <p>
+          This gives us another chance to look at some code. The HP2000 version uses lots of arrays/matrices:
+        </p>
+
+        <pre><code>
+          230  REM *****  PROGRAM STARTS HERE *****
+          240  Z$="                                                                      "
+          250  GOSUB 5460
+          260  DIM G[8,8],C[9,2],K[3,3],N[3],Z[8,8]
+          ...
+          420  C[2,1]=C[3,1]=C[4,1]=C[4,2]=C[5,2]=C[6,2]=-1
+          430  C[1,1]=C[3,2]=C[5,1]=C[7,2]=C[9,1]=0
+          440  C[1,2]=C[2,2]=C[6,1]=C[7,1]=C[8,1]=C[8,2]=C[9,2]=1
+          ...
+          1885  C2=INT(C1)
+          1890  X1=C[C2,1]+(C[C2+1,1]-C[C2,1])*(C1-C2)
+          1900  X2=C[C2,2]+(C[C2+1,2]-C[C2,2])*(C1-C2)
+          ...
+          2700  H=(X/K3/FND(0))*(2*RND(1))
+          2710  K[I,3]=K[I,3]-H
+          2720  PRINT  USING 2730;H,K[I,1],K[I,2],K[I,3]
+          2730  IMAGE  4D," UNIT HIT ON KLINGON AT SECTOR ",D,",",D,"   (",3D," LEFT)"
+          ...
+          3400  G[Q1,Q2]=K3*100+B3*10+S3
+        </code></pre>
+
+        <p>
+          <code>G</code> in the above is an 8&times;8 matrix. This represents the Galaxy. Elements contain three-digit values to store the number of Klingons, starbases, and stars in each of the sixty-four quadrants.
+        </p>
+
+        <p>
+          <code>C</code> is a 2&times;9 matrix. This provides a lookup table, of sorts, of &delta;row, &delta;col for a given course, where 1 &leq; course &lt; 9.
+        </p>
+
+        <p>
+          <code>K</code> is a 3&times;3 matrix. This is used to store Klingon attributes; row, column, and hit-points remaining for up to three enemies found in the current quadrant.
+        </p>
+
+        <p>
+          This code does point out something interesting as well. The line numbering in Mayfield's code is orderly, almost always increasing in units of 10. There are a few exceptions, however, and those can be interesting to consisder. For instance, from the code above, consider the portion of the code for converting a warp trajectory into the <em>Enterprise</em>'s new X,Y coordinates:
+        </p>
+
+        <pre><code>
+          1870 X=S1
+          1880 Y=S2
+          1885 C2=INT(C1)
+          1890 X1=C[C2,1]+(C[C2+1,1]-C[C2,1])*(C1-C2)
+          1900 X2=C[C2,2]+(C[C2+1,2]-C[C2,2])*(C1-C2)
+        </code></pre>
+
+        <p>
+          The anomalous line 1885 suggests a later refactor. Note that the new temporary <code>C2</code> variable appears in the next two lines, which presumably were also rewritten. A good guess is that an older version of the code converted the floating point number <code>C1</code> to an integer inline whenever the integer version was needed, which would have been much uglier and more confusing:
+        </p>
+
+        <pre><code>
+          1890 X1=C[INT(C1),1]+(C[INT(C1)+1,1]-C[INT(C1),1])*(C1-INT(C1))
+          1900 X2=C[INT(C1),2]+(C[INT(C1)+1,2]-C[INT(C1),2])*(C1-INT(C1))
+        </code></pre>
+
+        <p>
+          It's quite possible that someone, either Mayfield or HP or David Ahl, added the extra line to pull the conversion out and make the next two lines of code (marginally) more clear. There are only a handful of these instances of extra or missing line numbers in the Mayfield code.
+        </p>
+
+        <p>
+          Getting back to the movement in the game, which those lines of code above are handling, there's an interesting bit to consider here. Navigation, and as it turns out targeting, is done using polar coordinates. However you aren't seeing any trigonometric functions in the BASIC code above. What seems to happen is that the angle is converted into a direction vector using different ratios that approximate trigonometric functions.
+        </p>
+
+        <p>
+          To perform navigation, you use command <code>0</code>. In ny case, I'm going to move right (angle, or direction, 1) with a distance of 1 warp factor.
+        </p>
+
+        <pre><code>
+          COMMAND:?0
+          COURSE (1-9):?1
+          WARP FACTOR (0-8):?1
+        </code></pre>
+
+        <p>
+          Setting course is an interesting dynamic in the game as it is.
+        </p>
+
+        <pre><code>
+          1410  PRINT "COURSE (1-9):";
+          1420  INPUT C1
+          1430  IF C1=0 THEN 1270
+          1440  IF C1= 9 THEN 1410
+          1450  PRINT "WARP FACTOR (0-8):";
+          1460  INPUT W1
+          1470  IF W18 THEN 1410
+          1480  IF D[1] >= 0 OR W1 <= .2 THEN 1510
+          1490  PRINT "WARP ENGINES ARE DAMAGED, MAXIMUM SPEED = WARP .2"
+          1500  GOTO 1410
+        </code></pre>
+
+        <p>
+          Here <code>C1</code> contains the coures setting and <code>W1</code> contains the specified warp factor.
+        </p>
+
+        <p>
+          Once you enter an area, you automatically get that short range scan displayed as shown above. This is very similar to how later text adventure games would do an automatic “LOOK” command every time you entered a new room. Here's what I get:
+        </p>
+
+        <pre><code>
+          DAMAGE CONTROL REPORT:DAMAGE CNTRL DAMAGED
+
+          COMBAT AREA      CONDITION RED
+             SHIELDS DANGEROUSLY LOW
+          ---------------------------------
+                                   &lt;*>    
+                    *                             STARDATE         3201
+                        *  +++      *   *         CONDITION        RED   
+                *                                 QUADRANT         4,5
+                                                  SECTOR           1,7
+                        *                         ENERGY           2797
+                                                  PHOTON TORPEDOES 10
+                                *                 SHIELDS           200
+          ---------------------------------
+        </code></pre>
+
+        <p>
+          From the previous output, you can see that we've moved from quadrant (4,4) to quadrant (4,5). But why does it say my "DAMGE CNTRL" is damaged? I haven't gotten into combat yet! Well, it turns out the <em>Enterprise</em> can have bits fail on it at random times, definitely giving Chief Engineer Scotty some job security. Also notice that my energy has gone down slightly and my stardate has increased by "one turn." Also I'm being told by shields are dangerously low, suggesting that 200 was perhaps a little too conservative.
+        </p>
+
+        <p>
+          Let's get a damage report, which is command <code>6</code>.
+        </p>
+
+        <pre><code>
+          COMMAND:?6
+          DAMAGE CONTROL REPORT IS NOT AVAILABLE
+        </code></pre>
+
+        <p>
+          That's pretty cool and makes sense. My damage control is itself damaged so it can't report on it's own status! Let's talk about the health of our ship here for a second, from a code perspective. This allows us to consider some important Strings.
+        </p>
+
+        <pre><code>
+          270  DIM C$[6],D$[72],E$[24],A$[3],Q$[72],R$[72],S$[48]
+          280  DIM Z$[72]
+          ...
+          460  D$="WARP ENGINESS.R. SENSORSL.R. SENSORSPHASER CNTRL"
+          470  D$[49]="PHOTON TUBESDAMAGE CNTRL"
+          480  E$="SHIELD CNTRLCOMPUTER"
+          ...
+          950  Q$=Z$
+          960  R$=Z$
+          970  S$=Z$[1,48]
+          ...
+          3790  IF C$ &lt;> "DOCKED" THEN 3820
+          3800  PRINT "STAR BASE SHIELDS PROTECT THE ENTERPRISE"
+          3810  RETURN
+        </code></pre>
+
+        <p>
+          <code>C$</code> is a six character String. This contains the condition of the <em>Enterprise</em>: GREEN, RED, YELLOW, or DOCKED.
+        </p>
+
+        <p>
+          <code>D$</code> is a seventy-two character String. This contains the first six labels for the Damage Report, essentially a seventy-two character string that's treated as an array of six twelve character strings.
+        </p>
+
+        <p>
+          <code>E$</code> is a twenty-four character String. This contains two more labels for the Damage Report, essentially a twenty-four character string treated as array of two twelve character strings.
+        </p>
+
+        <p>
+          <code>A$</code> is a three character String. This provides a symbol definition for Stars ('*'), Klingons ('+++'), or the <em>Enterprise</em> ('&lt;*>').
+        </p>
+
+        <p>
+          I mentioned <code>Q$</code>, <code>R$</code>, and <code></code>S$</code> above. These are a total of a 192 character String. These provide a buffer used to display current quadrant. Effectively what these provide is 8&times;8 cells where each three character cell contains a copy of <code>A$</code> or empty space.
+        </p>
+
+        <p>
+          Finally, <code>Z$</code> is a seventy-two character String. This serves as a zeroed String, meaning seventy-twp spaces used to clear <code>Q$</code>, <code>R$</code>, and <code></code>S$</code>.
+        </p>
+
+        <p>
+          So now consider this bit of code:
+        </p>
+
+        <pre><code>
+          450  MAT D=ZER
+          460  D$="WARP ENGINESS.R. SENSORSL.R. SENSORSPHASER CNTRL"
+          470  D$[49]="PHOTON TUBESDAMAGE CNTRL"
+          480  E$="SHIELD CNTRLCOMPUTER"
+        </code></pre>
+
+        <p>
+          Line 450 initializes all of the systems damage to zero using a command that iterates across the element. Lines 460-480 are because HP BASIC didn't support an array of strings so each label can be retrieved as a substring instead. Incidentally, line 450 allows for the ability to operate on all elements of a matrix with a single command. This comes up in a similar context later in the code:
+        </p>
+
+        <pre><code>
+          910  MAT K=ZER
+          920  FOR I=1 TO 3
+          930  K[I,3]=0
+          940  NEXT I
+        </code></pre>
+          
+        <p> 
+          It's equivalent when broken out would be:
+        </p>
+
+        <pre><code>
+          910  FOR I=0 TO 3:FOR J=0 TO 3:K(I,J)=0:NEXT J:NEXT I
+        </code></pre>
+
+        <p>
+          If damage occurs, the affected system is deducted a random value between 1 and 5.
+        </p>
+
+        <pre><code>
+          1680  D[R1]=D[R1]-(RND(1)*5+1)
+          1690  PRINT
+          1700  PRINT "DAMAGE CONTROL REPORT:";
+          1710  GOSUB 5610
+          1720  PRINT " DAMAGED"
+        </code></pre>
+
+        <p>
+          The damaged systems are repaired by 1 unit per turn.
+        </p>
+
+        <pre><code>
+          1610  FOR I=1 TO 8
+          1620  IF D[I] >= 0 THEN 1640
+          1630  D[I]=D[I]+1
+          1640  NEXT I
+        </code></pre>
+      </section>
+
+      <section>
+        <h3>Combat in the Galaxy</h3>
+
+        <p>
+          Klingon ships are represented as '+++' so here we can see our single Klingon in this quadrant. We need to target the Klingon ship in order to destroy it. You use the ship's computer to help target the enemy and you use command <code>7</code> to utilize the ship's computer. There are three options you can use with the computer and the one we want now is command <code>3</code>, which deals with phasers.
+        </p>
+
+        <pre><code>
+          COMMAND:?6
+          DAMAGE CONTROL REPORT IS NOT AVAILABLE
+          COMMAND:?3
+          PHASERS LOCKED ON TARGET.  ENERGY AVAILABLE= 2797    
+          NUMBER OF UNITS TO FIRE:?700
+        </code></pre>
+
+        <p>
+          So I'm using quite a bit of energy (700) to take the enemy out. And I get:
+        </p>
+
+        <pre><code>
+            8 UNIT HIT ON ENTERPRISE AT SECTOR 3,5   ( 192 LEFT)
+          206 UNIT HIT ON KLINGON AT SECTOR 3,5   ( -6 LEFT)
+          KLINGON AT SECTOR 3,5 DESTROYED ****
+        </code></pre>
+
+        <p>
+          I got him! Of course and my energy dropped correspondingly.
+        </p>
+
+        <p>
+          It might be easier for you to just watch how someone else did this. Michael Sternberg gave a great rundown of the game and showcased some gameplay for his <a href="https://www.youtube.com/watch?v=DCul7V4Uios">Let's Play STTR1 - Retrochallenge</a>.
         </p>
       </section>
     </article>
