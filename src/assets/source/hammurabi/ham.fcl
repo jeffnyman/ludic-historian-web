@@ -1,0 +1,129 @@
+  Here's a "real" FOCAL program. It comes from volume 2 of "Programming 
+Languages" (1970). I typed it in by hand, so there may still be a typo in it,
+but what I've given you is a session run on my '8/E, ie the program DOES run.
+For those of you running FOCAL on an '8, Load FOCAL-8 without extended 
+functions, then load "King of Sumeria". I did this using a comms program 
+called PROCOMM; I simply did an ASCII transfer after setting up a delay after
+each line sent to allow FOCAL time to digest it. The session that follows
+was captured under the "log" feature of PROCOMM.
+
+------------------------------------------------------------------------------
+King of Sumaria
+ABSTRACT: The "King of Sumaria" is a game which challenges your ability to
+forsee the consumer market. Hamurabi, your servant, will state the following
+facts about last year, and you must decide the number of acres you will need,
+and how many bushels of grain you expect to distribute as food. You will base
+your decisions on these facts.
+  1. Number of people who died of starvation.
+  2. Number of new people who came to the city.
+  3. Number of acres owned by the city.
+  4. Number of bushels harvested per acre.
+  5. Total number of bushels that were harvested.
+  6. Number of bushels that were destroyed.
+  7. Number of bushels currently in storage.
+  Then, based on your decisions, Hamurabi will state a new report of the 
+above information.
+
+
+WRITE ALL
+C-FOCAL,1969
+
+01.10 S P=95;S S=2800;S H=3000;S E= 200;S Y=3;S A=1000;S I=5;S Q=1
+
+02.10 S D=0
+02.20 D 6;T !!!"LAST YEAR"!D," STARVED,
+02.25 T !I," ARRIVED,";S P=P+I;I (-Q)2.3
+02.27 S P=FITR(P/2);T !"**PLAGUE**"!
+02.30 T !"POPULATION IS"P,!!"THE CITY OWNS
+02.35 T A," ACRES."!!;I (H-1)2.5;T "WE HARVESTED
+02.40 D 3.2
+02.50 T !" RATS ATE "E," BUSHELS, YOU NOW HAVE
+02.60 T !S," BUSHELS IN STORE."!
+
+03.10 D 6; D 8;S Y=C+17;T "LAND IS TRADING AT
+03.20 T Y," BUSHELS PER ACRE;";S C=1
+03.30 D 4.3;A " BUY?"!Q;I (Q)7.2,3.8
+03.40 I (Y*Q-S)3.9,3.6;D 4.6;G 3.3
+03.50 D 4.5;G 3.3
+03.60 D 3.9:G 4.8
+03.70 S A=A+Q;S S=Y*Q;S C=0
+03.80 A !"TO SELL?"!Q;I (Q)7.2,3.9;S Q=-Q;I (A+Q)3.5
+03.90 S A=A+Q;S S=S-Y*Q;S C=0
+
+04.10 T !"BUSHELS TO USE
+04.11 A " AS FOOD?"!Q;I (Q)7.7;I (Q-S)4.2,4.7;D 4.6;G 4.1
+04.20 S S=S-Q;S C=1
+04.30 A !"HOW MANY ACRES OF LAND DO YOU WISH TO
+04.35 A !"PLANT WITH SEED? "D
+04.40 I (D)7.2;I (A-D)4.45;I (FITR(D/2)-S-1)4.65;D 4.6;G 4.3
+04.45 D 4.5;G 4.3
+04.50 D 7;T A," ACRES."!
+04.60 D 7;D 2.6
+04.65 I (D-10*P-1)5.1;D 7;T P," PEOPLE."!;G 4.3
+04.70 D 4.2
+04.80 D 6;T "YOU HAVE NO GRAIN LEFT AS SEED !!"!S D=0
+
+05.10 S S=S-FITR(D/2);D 8;S Y=C;S H=D*Y
+05.20 D 8;S E=0;I (FITR(C/2)-C/2)5.3;S E=S/C
+05.30 S S=S-E+H;D 8;S I=FITR(C*(20*A+S)/P/100+1);S C=FITR(Q/20)
+05.40 S Q=FITR(10*FABS(FRAN()));I (P-C)2.1;S D=P-C;S P=C;G 2.2
+
+06.10 T !!"HAMURABI:  "%5
+
+07.10 I (C)7.2;S C=C-1;D 6;T "BUT YOU HAVE ONLY";R
+07.20 D 6;T !"GOODBYE!"!!;Q
+
+08.10 S C=FITR(5*ABS(FRAN()))+1
+*
+*
+*GO
+
+
+HAMURABI:  
+
+
+LAST YEAR
+=     0 STARVED,
+=     5 ARRIVED,
+POPULATION IS=   100
+
+THE CITY OWNS=  1000 ACRES.
+
+WE HARVESTED=     3 BUSHELS PER ACRE;
+ RATS ATE =   200 BUSHELS, YOU NOW HAVE
+=  2800 BUSHELS IN STORE.
+
+
+HAMURABI:  LAND IS TRADING AT=    18 BUSHELS PER ACRE;
+HOW MANY ACRES OF LAND DO YOU WISH TO BUY?
+:0
+
+TO SELL?
+:0
+
+BUSHELS TO USE AS FOOD?
+:2000
+
+HOW MANY ACRES OF LAND DO YOU WISH TO
+PLANT WITH SEED? :800
+
+
+HAMURABI:  
+
+
+LAST YEAR
+=     0 STARVED,
+=     3 ARRIVED,
+POPULATION IS=   103
+
+THE CITY OWNS=  1000 ACRES.
+
+WE HARVESTED=     1 BUSHELS PER ACRE;
+ RATS ATE =     0 BUSHELS, YOU NOW HAVE
+=  1200 BUSHELS IN STORE.
+
+
+HAMURABI:  LAND IS TRADING AT=    18 BUSHELS PER ACRE;
+HOW MANY ACRES OF LAND DO YOU WISH TO BUY?
+:?01.00 @ 03.30 
+*
